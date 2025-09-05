@@ -1,5 +1,7 @@
-﻿using Latte.Application;
-using Latte.Core.Type;
+﻿using Latte.Core.Type;
+using Latte.Application;
+
+
 using Sprite = Milkway.Sprite;
 
 
@@ -15,22 +17,16 @@ class Program
 
         var tile = new Sprite(EmbeddedResources.LoadTextureFromSprites("Tiles.TestTile.png"));
 
-        // +0.5f solves the bad pixel scalling problem... study more about it
-        tile.UpdateEvent += (_, _) => tile.Position = (Vec2f)MouseInput.Position + new Vec2f(0, 0.5f);
+        tile.UpdateEvent += (_, _) =>
+            tile.Position = ((Vec2f)MouseInput.Position).ToHalfDecimal() - (Vec2f)tile.GetBounds().Size / 2f * Game.Scale;
 
 
         App.AddObject(tile);
 
         while (!App.ShouldQuit)
         {
-            Console.WriteLine($"mouse position: {MouseInput.Position}");
-            Console.WriteLine($"tile position: {tile.Position}");
-            Console.WriteLine($"scale: {Game.Scale}");
-
             game.Update();
             game.Draw();
-
-            Console.WriteLine();
         }
     }
 }

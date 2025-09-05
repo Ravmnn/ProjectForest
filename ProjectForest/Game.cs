@@ -3,7 +3,6 @@ using SFML.Graphics;
 
 using Latte.Core.Type;
 using Latte.Application;
-using Window = SFML.Window.Window;
 
 
 namespace ProjectForest;
@@ -14,7 +13,7 @@ public class Game
     private bool _initialized;
 
 
-    public static Vec2u Resolution => AspectRatio * 10;
+    public static Vec2u Resolution => AspectRatio * 20;
     public static Vec2u AspectRatio => new Vec2u(16, 9);
 
     public static Vec2f Scale =>
@@ -23,6 +22,8 @@ public class Game
     public PixelatedRenderer Renderer { get; private set; }
     public RenderTexture RenderTexture => Renderer.RenderTexture;
     public Sprite RenderTextureSprite { get; private set; }
+
+    public CircleShape CircleShape { get; private set; }
 
 
     public Game()
@@ -46,6 +47,8 @@ public class Game
         Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
         RenderTextureSprite = new Sprite(RenderTexture.Texture);
 
+        CircleShape = new CircleShape(8f);
+
         _initialized = true;
     }
 
@@ -68,6 +71,7 @@ public class Game
     {
         RenderTexture.Clear();
         App.Draw(Renderer);
+        Renderer.Render(CircleShape);
         RenderTexture.Display();
 
         App.Window.Clear();
