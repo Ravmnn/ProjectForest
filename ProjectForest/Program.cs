@@ -1,7 +1,5 @@
-﻿using Latte.Core.Type;
-using Latte.Application;
-using Latte.UI.Elements;
-using SFML.Graphics;
+﻿using Latte.Application;
+using Latte.Core.Type;
 using Sprite = Milkway.Sprite;
 
 
@@ -12,23 +10,27 @@ class Program
 {
     private static void Main(string[] args)
     {
-        Game.Init();
+        var game = new Game();
 
 
-        var tile = new Sprite(EmbeddedResources.LoadTextureFromSprites("Tiles.TestTile.png"))
-        {
-            Scale = Game.Scale
-        };
+        var tile = new Sprite(EmbeddedResources.LoadTextureFromSprites("Tiles.TestTile.png"));
 
-        tile.UpdateEvent += (_, _) => tile.Position = MouseInput.PositionInObjectView;
+        // +0.5f solves the bad pixel scalling problem... study more about it
+        tile.UpdateEvent += (_, _) => tile.Position = (Vec2f)MouseInput.Position + new Vec2f(0, 0.5f);
 
 
         App.AddObject(tile);
 
         while (!App.ShouldQuit)
         {
-            Game.Update();
-            Game.Draw();
+            Console.WriteLine($"mouse position: {MouseInput.Position}");
+            Console.WriteLine($"tile position: {tile.Position}");
+            Console.WriteLine($"scale: {Game.Scale}");
+
+            game.Update();
+            game.Draw();
+
+            Console.WriteLine();
         }
     }
 }

@@ -3,54 +3,71 @@ using SFML.Graphics;
 
 using Latte.Core.Type;
 using Latte.Application;
+using Window = SFML.Window.Window;
 
 
 namespace ProjectForest;
 
 
-public static class Game
+public class Game
 {
-    public static Vec2u Resolution => AspectRatio * 25;
-    public static Vec2u AspectRatio => new Vec2u(16, 9);
+    private bool _initialized;
 
-    public static RenderTexture RenderTexture { get; private set; }
-    public static Sprite RenderTextureSprite { get; private set; }
+
+    public static Vec2u Resolution => AspectRatio * 10;
+    public static Vec2u AspectRatio => new Vec2u(16, 9);
 
     public static Vec2f Scale =>
         new Vec2f((float)App.Window.WindowRect.Size.X / Resolution.X, (float)App.Window.WindowRect.Size.Y / Resolution.Y);
 
+    public PixelatedRenderer Renderer { get; private set; }
+    public RenderTexture RenderTexture => Renderer.RenderTexture;
+    public Sprite RenderTextureSprite { get; private set; }
 
-    static Game()
+
+    public Game()
     {
-        RenderTexture = new RenderTexture(Resolution.X, Resolution.Y);
-        RenderTextureSprite = new Sprite(RenderTexture.Texture);
-    }
+        _initialized = false;
 
 
-    public static void Init()
-    {
-        App.Init(VideoMode.DesktopMode, "Project Forest", Latte.Core.EmbeddedResources.DefaultFont());
+        App.Init(VideoMode.FullscreenModes[0], "Project Forest", Latte.Core.EmbeddedResources.DefaultFont(),
+            Styles.Fullscreen, Latte.Application.Window.DefaultSettings with { AntialiasingLevel = 0 });
+
         App.Debugger!.EnableKeyShortcuts = true;
         App.ManualClearDisplayProcess = true;
-
-        RenderTexture.SetView(App.MainView);
     }
 
 
-    public static void Update()
+    private void Setup()
     {
-        // TODO: switching to fullscreen breaks the coordinate system a little bit
+        if (_initialized)
+            return;
 
+        Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
+        RenderTextureSprite = new Sprite(RenderTexture.Texture);
+
+        _initialized = true;
+    }
+
+
+    public void Update()
+    {
+        App.Update();
+
+        Setup();
+
+        // TODO: switching to fullscreen breaks the coordinate system a little bit
+        Renderer.Scale = Scale;
         RenderTextureSprite.Scale = Scale;
 
-        App.Update();
+        RenderTexture.SetView(App.Window.GetView());
     }
 
 
-    public static void Draw()
+    public void Draw()
     {
         RenderTexture.Clear();
-        App.Draw(RenderTexture);
+        App.Draw(Renderer);
         RenderTexture.Display();
 
         App.Window.Clear();
