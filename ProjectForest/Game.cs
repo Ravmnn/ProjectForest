@@ -52,7 +52,7 @@ public class Game
             return;
 
         foreach (var tile in TileMap.Tiles)
-            tile.Sprite = new Milkway.Sprite(EmbeddedResources.LoadTextureFromSprites("Tiles.TestTile.png"));
+            tile.Sprite = new Milkway.Sprite(EmbeddedResources.LoadTextureFromSprites("Tiles.Cave.TestTile.png"));
 
         App.AddObjects(TileMap.Tiles.Cast<Tile>());
 
