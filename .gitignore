@@ -1,1 +1,4 @@
-code/
+obj/
+bin/
+.*
+*.user

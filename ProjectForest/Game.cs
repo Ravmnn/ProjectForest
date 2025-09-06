@@ -4,6 +4,8 @@ using SFML.Graphics;
 using Latte.Core.Type;
 using Latte.Application;
 
+using Milkway.Tiles;
+
 
 namespace ProjectForest;
 
@@ -23,7 +25,7 @@ public class Game
     public RenderTexture RenderTexture => Renderer.RenderTexture;
     public Sprite RenderTextureSprite { get; private set; }
 
-    public CircleShape CircleShape { get; private set; }
+    public TileMap TileMap { get; private set; }
 
 
     public Game()
@@ -36,6 +38,11 @@ public class Game
 
         App.Debugger!.EnableKeyShortcuts = true;
         App.ManualClearDisplayProcess = true;
+
+        TileMap = new TileMap(20, 20, 8, new Vec2f(10, 10));
+
+        Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
+        RenderTextureSprite = new Sprite(RenderTexture.Texture);
     }
 
 
@@ -44,10 +51,10 @@ public class Game
         if (_initialized)
             return;
 
-        Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
-        RenderTextureSprite = new Sprite(RenderTexture.Texture);
+        foreach (var tile in TileMap.Tiles)
+            tile.Sprite = new Milkway.Sprite(EmbeddedResources.LoadTextureFromSprites("Tiles.TestTile.png"));
 
-        CircleShape = new CircleShape(8f);
+        App.AddObjects(TileMap.Tiles.Cast<Tile>());
 
         _initialized = true;
     }
@@ -59,7 +66,6 @@ public class Game
 
         Setup();
 
-        // TODO: switching to fullscreen breaks the coordinate system a little bit
         Renderer.Scale = Scale;
         RenderTextureSprite.Scale = Scale;
 
@@ -71,7 +77,6 @@ public class Game
     {
         RenderTexture.Clear();
         App.Draw(Renderer);
-        Renderer.Render(CircleShape);
         RenderTexture.Display();
 
         App.Window.Clear();

@@ -17,13 +17,20 @@ public class PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null)
     {
         var transformable = drawable as Transformable;
         var oldScale = transformable?.Scale;
+        var oldPosition = transformable?.Position;
 
         if (transformable is not null)
+        {
             transformable.Scale = Scale;
+            transformable.Position = (Vec2f)transformable.Position * Scale;
+        }
 
         RenderTexture.Draw(drawable);
 
         if (transformable is not null)
+        {
             transformable.Scale = oldScale!.Value;
+            transformable.Position = oldPosition!.Value;
+        }
     }
 }
