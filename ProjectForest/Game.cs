@@ -1,10 +1,16 @@
+using System.Reflection;
+
 using SFML.Window;
 using SFML.Graphics;
 
+using Latte.Core;
 using Latte.Core.Type;
 using Latte.Application;
 
+using DotTiled.Serialization;
+
 using Milkway.Tiles;
+using Milkway.Tiles.Tiled;
 
 
 namespace ProjectForest;
@@ -15,7 +21,7 @@ public class Game
     private bool _initialized;
 
 
-    public static Vec2u Resolution => AspectRatio * 20;
+    public static Vec2u Resolution => AspectRatio * 40;
     public static Vec2u AspectRatio => new Vec2u(16, 9);
 
     public static Vec2f Scale =>
@@ -26,20 +32,42 @@ public class Game
     public Sprite RenderTextureSprite { get; private set; }
 
     public TileMap TileMap { get; private set; }
+    public Milkway.Sprite Character { get; private set; }
 
 
     public Game()
     {
         _initialized = false;
 
+        SetupApplication();
+        SetupGame();
+    }
 
-        App.Init(VideoMode.FullscreenModes[0], "Project Forest", Latte.Core.EmbeddedResources.DefaultFont(),
+
+    private void SetupApplication()
+    {
+        App.Init(VideoMode.FullscreenModes[0], "Project Forest", null,
             Styles.Fullscreen, Latte.Application.Window.DefaultSettings with { AntialiasingLevel = 0 });
 
         App.Debugger!.EnableKeyShortcuts = true;
         App.ManualClearDisplayProcess = true;
 
-        TileMap = new TileMap(20, 20, 8, new Vec2f(10, 10));
+        EmbeddedResourceLoader.ResourcesPath = "ProjectForest.Resources";
+        EmbeddedResourceLoader.SourceAssembly = Assembly.GetExecutingAssembly();
+    }
+
+
+    private void SetupGame()
+    {
+        var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps"));
+
+        var map = loader.LoadMap("CaveTestMap.tmx");
+        var tileSet = new TileSet(EmbeddedResourceLoader.LoadImage("Sprites.Tiles.Cave.Tileset.png"), 8);
+
+        TileMap = new TileMap(tileSet, map, new Vec2f(100, 100));
+
+        Character = EmbeddedResourceLoader.LoadTexture("Sprites.Entities.CharacterTest.png");
+        Character.Position = new Vec2f(90, 80);
 
         Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
         RenderTextureSprite = new Sprite(RenderTexture.Texture);
@@ -51,10 +79,8 @@ public class Game
         if (_initialized)
             return;
 
-        foreach (var tile in TileMap.Tiles)
-            tile.Sprite = new Milkway.Sprite(EmbeddedResources.LoadTextureFromSprites("Tiles.Cave.TestTile.png"));
-
         App.AddObjects(TileMap.Tiles.Cast<Tile>());
+        App.AddObject(Character);
 
         _initialized = true;
     }
