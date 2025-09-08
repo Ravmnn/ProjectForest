@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 
 using SFML.Window;
@@ -11,6 +12,9 @@ using DotTiled.Serialization;
 
 using Milkway.Tiles;
 using Milkway.Tiles.Tiled;
+
+
+using Tile = Milkway.Tiles.Tile;
 
 
 namespace ProjectForest;
@@ -30,9 +34,11 @@ public class Game
     public PixelatedRenderer Renderer { get; private set; }
     public RenderTexture RenderTexture => Renderer.RenderTexture;
     public Sprite RenderTextureSprite { get; private set; }
+    public View RenderTextureView { get; private set; }
+
+    public MouseScreenDragger MouseScreenDragger { get; private set; }
 
     public TileMap TileMap { get; private set; }
-    public Milkway.Sprite Character { get; private set; }
 
 
     public Game()
@@ -59,18 +65,25 @@ public class Game
 
     private void SetupGame()
     {
-        var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps"));
+        var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps.Cave"));
 
-        var map = loader.LoadMap("CaveTestMap.tmx");
-        var tileSet = new TileSet(EmbeddedResourceLoader.LoadImage("Sprites.Tiles.Cave.Tileset.png"), 8);
+        var map = loader.LoadMap("Test.tmx");
+        var tileSet = new TileSet(EmbeddedResourceLoader.LoadImage("Sprites.Tilesets.GrayboxingTileset.png"), 8);
 
-        TileMap = new TileMap(tileSet, map, new Vec2f(100, 100));
+        var stopwatch = Stopwatch.StartNew();
 
-        Character = EmbeddedResourceLoader.LoadTexture("Sprites.Entities.CharacterTest.png");
-        Character.Position = new Vec2f(90, 80);
+        // TODO: optimize tile rendering and updating cycle
+        TileMap = new TileMap(tileSet, map);
+
+        stopwatch.Stop();
+
+        Console.WriteLine($"Loading tiles took {stopwatch.ElapsedMilliseconds}ms");
 
         Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
         RenderTextureSprite = new Sprite(RenderTexture.Texture);
+        RenderTextureView = App.Window.GetView();
+
+        MouseScreenDragger = new MouseScreenDragger(RenderTextureView);
     }
 
 
@@ -80,7 +93,6 @@ public class Game
             return;
 
         App.AddObjects(TileMap.Tiles.Cast<Tile>());
-        App.AddObject(Character);
 
         _initialized = true;
     }
@@ -92,10 +104,12 @@ public class Game
 
         Setup();
 
+        MouseScreenDragger.Update();
+
         Renderer.Scale = Scale;
         RenderTextureSprite.Scale = Scale;
 
-        RenderTexture.SetView(App.Window.GetView());
+        RenderTexture.SetView(RenderTextureView);
     }
 
 

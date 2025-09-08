@@ -1,0 +1,55 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "fileStates": {
+        "Maps/Cave/Cave.tmx": {
+            "scale": 0.125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 3236,
+                "y": 1076
+            }
+        },
+        "Maps/Cave/Grayboxing.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 5.5
+        },
+        "Maps/Cave/Test.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 965,
+                "y": 601
+            }
+        },
+        "Sprites/Tilesets/Grayboxing.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 5.5
+        }
+    },
+    "last.externalTilesetPath": "/home/marvin/Documentos/program/csharp/ProjectForest/ProjectForest/Resources/Maps/Cave",
+    "last.imagePath": "/home/marvin/Documentos/program/csharp/ProjectForest/ProjectForest/Resources/Sprites/Tilesets",
+    "map.height": 50,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 50,
+    "openFiles": [
+    ],
+    "project": "ProjectForest.tiled-project",
+    "recentFiles": [
+        "Maps/Cave/Grayboxing.tsx",
+        "Sprites/Tilesets/Grayboxing.tsx"
+    ],
+    "tileset.lastUsedFilter": "Ficheiros de conjunto de tiles Tiled (*.tsx *.xml)",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 8,
+        "width": 8
+    }
+}

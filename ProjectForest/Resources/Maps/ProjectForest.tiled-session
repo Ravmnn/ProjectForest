@@ -1,13 +1,8 @@
 {
-    "Map/SizeTest": {
-        "height": 4300,
-        "width": 2
-    },
-    "activeFile": "CaveTestMap.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
         "."
     ],
-    "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
         "Cave.tsx": {
             "scaleInDock": 1,
@@ -15,14 +10,14 @@
         },
         "CaveSet.tsx": {
             "scaleInDock": 11,
-            "scaleInEditor": 11
+            "scaleInEditor": 16
         },
         "CaveTestMap.tmx": {
-            "scale": 8,
+            "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 62.1875,
-                "y": 61
+                "x": 139.875,
+                "y": 69.625
             }
         },
         "CaveTestMap.tsx": {
@@ -38,27 +33,14 @@
             }
         }
     },
-    "last.imagePath": "/home/marvin/Documentos/program/csharp/ProjectForest/ProjectForest/Resources/Sprites/Tiles/Cave",
-    "map.height": 100,
-    "map.lastUsedFormat": "tmx",
-    "map.tileHeight": 8,
-    "map.tileWidth": 8,
-    "map.width": 100,
     "openFiles": [
-        "CaveTestMap.tmx",
-        "CaveSet.tsx"
     ],
     "project": "ProjectForest.tiled-project",
     "recentFiles": [
         "CaveSet.tsx",
-        "CaveTestMap.tsx",
         "CaveTestMap.tmx",
+        "CaveTestMap.tsx",
         "Cave.tsx",
         "test.tmx"
-    ],
-    "tileset.lastUsedFormat": "tsx",
-    "tileset.tileSize": {
-        "height": 8,
-        "width": 8
-    }
+    ]
 }
