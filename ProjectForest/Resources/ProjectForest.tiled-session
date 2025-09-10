@@ -1,9 +1,48 @@
 {
-    "activeFile": "Maps/Cave/Test.tmx",
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Maps/Cave/Cave.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
+        "Maps/Cave/1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 951.9999999999999,
+                "y": 483.33333333333326
+            }
+        },
+        "Maps/Cave/2.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 945,
+                "y": 641.25
+            }
+        },
+        "Maps/Cave/3.tmx": {
+            "scale": 0.7445624999999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 800.470074708302,
+                "y": 599.6810207336523
+            }
+        },
+        "Maps/Cave/Cave.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 522,
+                "y": 672.5
+            }
+        },
         "Maps/Cave/Grayboxing.tsx": {
             "scaleInDock": 1
         },
@@ -11,16 +50,26 @@
             "scale": 0.46728515625,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1599.6656217345874,
+                "x": 1600.7356321839084,
                 "y": 1599.6656217345876
             }
         }
     },
+    "map.height": 150,
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 8,
+    "map.tileWidth": 8,
+    "map.width": 200,
     "openFiles": [
-        "Maps/Cave/Test.tmx"
+        "Maps/Cave/Test.tmx",
+        "Maps/Cave/Cave.tmx"
     ],
     "project": "ProjectForest.tiled-project",
     "recentFiles": [
-        "Maps/Cave/Test.tmx"
+        "Maps/Cave/Test.tmx",
+        "Maps/Cave/1.tmx",
+        "Maps/Cave/3.tmx",
+        "Maps/Cave/2.tmx",
+        "Maps/Cave/Cave.tmx"
     ]
 }

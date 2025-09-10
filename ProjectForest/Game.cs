@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Reflection;
 
 using SFML.Window;
@@ -12,9 +11,6 @@ using DotTiled.Serialization;
 
 using Milkway.Tiles;
 using Milkway.Tiles.Tiled;
-
-
-using Tile = Milkway.Tiles.Tile;
 
 
 namespace ProjectForest;
@@ -38,7 +34,7 @@ public class Game
 
     public MouseScreenDragger MouseScreenDragger { get; private set; }
 
-    public TileMap TileMap { get; private set; }
+    public World World { get; private set; }
 
 
     public Game()
@@ -67,17 +63,11 @@ public class Game
     {
         var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps.Cave"));
 
-        var map = loader.LoadMap("Test.tmx");
+        var map = loader.LoadMap("Cave.tmx");
         var tileSet = new TileSet(EmbeddedResourceLoader.LoadImage("Sprites.Tilesets.GrayboxingTileset.png"), 8);
 
-        var stopwatch = Stopwatch.StartNew();
-
         // TODO: optimize tile rendering and updating cycle
-        TileMap = new TileMap(tileSet, map);
-
-        stopwatch.Stop();
-
-        Console.WriteLine($"Loading tiles took {stopwatch.ElapsedMilliseconds}ms");
+        World = new World(map, tileSet);
 
         Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
         RenderTextureSprite = new Sprite(RenderTexture.Texture);
@@ -92,8 +82,6 @@ public class Game
         if (_initialized)
             return;
 
-        App.AddObjects(TileMap.Tiles.Cast<Tile>());
-
         _initialized = true;
     }
 
@@ -103,6 +91,18 @@ public class Game
         App.Update();
 
         Setup();
+
+        if (KeyboardInput.ReleasedKeyCode == Keyboard.Scancode.Left)
+        {
+            World.LoadRoomByIndex(World.CurrentRoomIndex - 1);
+            Console.WriteLine(World.CurrentRoomIndex);
+        }
+
+        if (KeyboardInput.ReleasedKeyCode == Keyboard.Scancode.Right)
+        {
+            World.LoadRoomByIndex(World.CurrentRoomIndex + 1);
+            Console.WriteLine(World.CurrentRoomIndex);
+        }
 
         MouseScreenDragger.Update();
 
