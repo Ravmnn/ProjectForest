@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 using SFML.Graphics;
 
 using DotTiled;
@@ -43,13 +41,9 @@ public class World
         var tileSize = (int)Map.TileWidth;
         var area = new IntRect((int)room.X / tileSize, (int)room.Y / tileSize, (int)room.Width / tileSize, (int)room.Height / tileSize);
 
-        var stopwatch = Stopwatch.StartNew();
-            CurrentRoomIndex = index;
-            CurrentRoom = new TileMap(TileSet, Map, area);
-            CurrentRoom.AddTilesToApp();
-        stopwatch.Stop();
-
-        Console.WriteLine($"Loading tiles took {stopwatch.ElapsedMilliseconds}ms");
+        CurrentRoomIndex = index;
+        CurrentRoom = new TileMap(TileSet, Map, area);
+        CurrentRoom.AddTilesToApp();
     }
 
 

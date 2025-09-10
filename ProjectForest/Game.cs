@@ -74,6 +74,21 @@ public class Game
         RenderTextureView = App.Window.GetView();
 
         MouseScreenDragger = new MouseScreenDragger(RenderTextureView);
+
+        KeyboardInput.KeyReleasedEvent += (_, args) =>
+        {
+            if (args.Scancode == Keyboard.Scancode.Left)
+            {
+                World.LoadRoomByIndex(World.CurrentRoomIndex - 1);
+                Console.WriteLine(World.CurrentRoomIndex);
+            }
+
+            if (args.Scancode == Keyboard.Scancode.Right)
+            {
+                World.LoadRoomByIndex(World.CurrentRoomIndex + 1);
+                Console.WriteLine(World.CurrentRoomIndex);
+            }
+        };
     }
 
 
@@ -91,18 +106,6 @@ public class Game
         App.Update();
 
         Setup();
-
-        if (KeyboardInput.ReleasedKeyCode == Keyboard.Scancode.Left)
-        {
-            World.LoadRoomByIndex(World.CurrentRoomIndex - 1);
-            Console.WriteLine(World.CurrentRoomIndex);
-        }
-
-        if (KeyboardInput.ReleasedKeyCode == Keyboard.Scancode.Right)
-        {
-            World.LoadRoomByIndex(World.CurrentRoomIndex + 1);
-            Console.WriteLine(World.CurrentRoomIndex);
-        }
 
         MouseScreenDragger.Update();
 

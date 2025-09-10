@@ -209,7 +209,7 @@
   <object id="9" name="0" x="0" y="456" width="1192" height="272"/>
   <object id="12" name="1" x="1192" y="248" width="808" height="528"/>
   <object id="13" name="2" x="2000" y="536" width="1200" height="624"/>
-  <object id="14" name="3" x="3200" y="800" width="1152" height="592"/>
+  <object id="14" name="3" x="3200" y="800" width="1152" height="664"/>
   <object id="15" name="4" x="4352" y="864" width="1080" height="736"/>
   <object id="19" name="5" x="5432" y="0" width="576" height="1600"/>
   <object id="20" name="6" x="6008" y="0" width="1192" height="408"/>
