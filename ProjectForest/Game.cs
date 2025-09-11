@@ -15,6 +15,9 @@ using Milkway.Tiles;
 using Milkway.Tiles.Tiled;
 
 
+using Sprite = SFML.Graphics.Sprite;
+
+
 namespace ProjectForest;
 
 
@@ -31,12 +34,20 @@ public class Game
 
     public PixelatedRenderer Renderer { get; private set; }
     public RenderTexture RenderTexture => Renderer.RenderTexture;
-    public View RenderTextureView { get; private set; }
 
     public Camera Camera { get; private set; }
     public MouseScreenDragger MouseScreenDragger { get; private set; }
 
     public CircleShape TestCircle { get; private set; }
+
+    public Sprite Layer1 { get; private set; }
+    public Sprite Layer2 { get; private set; }
+    public Sprite Layer3 { get; private set; }
+    public Sprite Layer4 { get; private set; }
+    public Sprite Layer5 { get; private set; }
+    public Sprite Layer6 { get; private set; }
+    public Parallax Parallax { get; private set; }
+
 
     public World World { get; private set; }
 
@@ -70,33 +81,47 @@ public class Game
 
         TestCircle = new CircleShape(10f) { Position = new Vector2f(20, 20) };
 
+        Layer1 = new Sprite(ColorTexture.FromColor(32, 32, Color.Red)) { Position = new Vec2f(100, 50) };
+        Layer2 = new Sprite(ColorTexture.FromColor(32, 32, Color.Green)) { Position = new Vec2f(100, 50) };
+        Layer3 = new Sprite(ColorTexture.FromColor(32, 32, Color.Blue)) { Position = new Vec2f(100, 50) };
+        Layer4 = new Sprite(ColorTexture.FromColor(32, 32, Color.Cyan)) { Position = new Vec2f(100, 50) };
+        Layer5 = new Sprite(ColorTexture.FromColor(32, 32, Color.Magenta)) { Position = new Vec2f(100, 50) };
+        Layer6 = new Sprite(ColorTexture.FromColor(32, 32, Color.Yellow)) { Position = new Vec2f(100, 50) };
+
+        Parallax = new Parallax(Camera);
+        Parallax.Layers.Add(new ParallaxLayer(Layer1, 0f));
+        Parallax.Layers.Add(new ParallaxLayer(Layer2, 0.5f));
+        Parallax.Layers.Add(new ParallaxLayer(Layer3, 2f));
+        Parallax.Layers.Add(new ParallaxLayer(Layer4, 3f));
+        Parallax.Layers.Add(new ParallaxLayer(Layer5, 4f));
+        Parallax.Layers.Add(new ParallaxLayer(Layer6, 8f));
+
         Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
-        RenderTextureView = App.Window.GetView();
 
 
-        var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps.Cave"));
-
-        var map = loader.LoadMap("Cave.tmx");
-        var tileSet = new TileSet(EmbeddedResourceLoader.LoadImage("Sprites.Tilesets.GrayboxingTileset.png"), 8);
-
-        // TODO: optimize tile rendering and updating cycle
-        World = new World(map, tileSet);
-
-
-        KeyboardInput.KeyReleasedEvent += (_, args) =>
-        {
-            if (args.Scancode == Keyboard.Scancode.Left)
-            {
-                World.LoadRoomByIndex(World.CurrentRoomIndex - 1);
-                Console.WriteLine(World.CurrentRoomIndex);
-            }
-
-            if (args.Scancode == Keyboard.Scancode.Right)
-            {
-                World.LoadRoomByIndex(World.CurrentRoomIndex + 1);
-                Console.WriteLine(World.CurrentRoomIndex);
-            }
-        };
+        // var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps.Cave"));
+        //
+        // var map = loader.LoadMap("Cave.tmx");
+        // var tileSet = new TileSet(EmbeddedResourceLoader.LoadImage("Sprites.Tilesets.GrayboxingTileset.png"), 8);
+        //
+        // // TODO: optimize tile rendering and updating cycle
+        // World = new World(map, tileSet);
+        //
+        //
+        // KeyboardInput.KeyReleasedEvent += (_, args) =>
+        // {
+        //     if (args.Scancode == Keyboard.Scancode.Left)
+        //     {
+        //         World.LoadRoomByIndex(World.CurrentRoomIndex - 1);
+        //         Console.WriteLine(World.CurrentRoomIndex);
+        //     }
+        //
+        //     if (args.Scancode == Keyboard.Scancode.Right)
+        //     {
+        //         World.LoadRoomByIndex(World.CurrentRoomIndex + 1);
+        //         Console.WriteLine(World.CurrentRoomIndex);
+        //     }
+        // };
     }
 
 
@@ -115,17 +140,23 @@ public class Game
 
         Setup();
 
+
+        Parallax.Update();
+        Parallax.Active = !Mouse.IsButtonPressed(Mouse.Button.Right);
+
+        Camera.Update();
         MouseScreenDragger.Update();
 
+
         Renderer.Scale = Scale;
-        RenderTexture.SetView(RenderTextureView);
+        RenderTexture.SetView(App.Window.GetView());
     }
 
 
     public void Draw()
     {
         RenderTexture.Clear();
-        Renderer.Render(TestCircle);
+        Parallax.Draw(Renderer);
         App.Draw(Renderer);
         RenderTexture.Display();
 

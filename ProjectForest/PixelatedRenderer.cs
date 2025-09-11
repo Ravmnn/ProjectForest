@@ -2,6 +2,7 @@ using SFML.Graphics;
 
 using Latte.Core.Type;
 using Latte.Application;
+using SFML.System;
 
 
 namespace ProjectForest;
@@ -41,7 +42,9 @@ public class PixelatedRenderer : DefaultRenderer
 
         if (transformable is not null)
         {
-            transformable.Scale = Scale;
+            var newScale = new Vector2f(transformable.Scale.X * Scale.X, transformable.Scale.Y * Scale.Y);
+
+            transformable.Scale = newScale;
             transformable.Position = (Vec2f)transformable.Position * Scale;
         }
 

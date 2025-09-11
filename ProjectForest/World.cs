@@ -42,7 +42,7 @@ public class World
         var area = new IntRect((int)room.X / tileSize, (int)room.Y / tileSize, (int)room.Width / tileSize, (int)room.Height / tileSize);
 
         CurrentRoomIndex = index;
-        CurrentRoom = new TileMap(TileSet, Map, area);
+        CurrentRoom = new TileMap(TileSet, Map, (Map.Layers[1] as TileLayer)!, area);
         CurrentRoom.AddTilesToApp();
     }
 
