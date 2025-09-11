@@ -7,10 +7,30 @@ using Latte.Application;
 namespace ProjectForest;
 
 
-public class PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null) : DefaultRenderer(renderTexture)
+public class PixelatedRenderer : DefaultRenderer
 {
+    private Vec2f _scale;
+
+
     public RenderTexture RenderTexture => (RenderTarget as RenderTexture)!;
-    public Vec2f Scale { get; set; } = scale ?? new Vec2f(1, 1);
+    public Sprite RenderTextureSprite { get; }
+
+    public Vec2f Scale
+    {
+        get => _scale;
+        set
+        {
+            _scale = value;
+            RenderTextureSprite.Scale = _scale;
+        }
+    }
+
+
+    public PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null) : base(renderTexture)
+    {
+        _scale = scale ?? new Vec2f(1, 1);
+        RenderTextureSprite = new Sprite(RenderTexture.Texture);
+    }
 
 
     public override void Render(Drawable drawable)

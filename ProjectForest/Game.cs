@@ -1,5 +1,6 @@
 using System.Reflection;
 
+using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
 
@@ -9,6 +10,7 @@ using Latte.Application;
 
 using DotTiled.Serialization;
 
+using Milkway;
 using Milkway.Tiles;
 using Milkway.Tiles.Tiled;
 
@@ -21,7 +23,7 @@ public class Game
     private bool _initialized;
 
 
-    public static Vec2u Resolution => AspectRatio * 40;
+    public static Vec2u Resolution => AspectRatio * 15;
     public static Vec2u AspectRatio => new Vec2u(16, 9);
 
     public static Vec2f Scale =>
@@ -29,10 +31,12 @@ public class Game
 
     public PixelatedRenderer Renderer { get; private set; }
     public RenderTexture RenderTexture => Renderer.RenderTexture;
-    public Sprite RenderTextureSprite { get; private set; }
     public View RenderTextureView { get; private set; }
 
+    public Camera Camera { get; private set; }
     public MouseScreenDragger MouseScreenDragger { get; private set; }
+
+    public CircleShape TestCircle { get; private set; }
 
     public World World { get; private set; }
 
@@ -61,6 +65,15 @@ public class Game
 
     private void SetupGame()
     {
+        Camera = new Camera(App.Window);
+        MouseScreenDragger = new MouseScreenDragger(Camera);
+
+        TestCircle = new CircleShape(10f) { Position = new Vector2f(20, 20) };
+
+        Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
+        RenderTextureView = App.Window.GetView();
+
+
         var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps.Cave"));
 
         var map = loader.LoadMap("Cave.tmx");
@@ -69,11 +82,6 @@ public class Game
         // TODO: optimize tile rendering and updating cycle
         World = new World(map, tileSet);
 
-        Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
-        RenderTextureSprite = new Sprite(RenderTexture.Texture);
-        RenderTextureView = App.Window.GetView();
-
-        MouseScreenDragger = new MouseScreenDragger(RenderTextureView);
 
         KeyboardInput.KeyReleasedEvent += (_, args) =>
         {
@@ -110,8 +118,6 @@ public class Game
         MouseScreenDragger.Update();
 
         Renderer.Scale = Scale;
-        RenderTextureSprite.Scale = Scale;
-
         RenderTexture.SetView(RenderTextureView);
     }
 
@@ -119,11 +125,12 @@ public class Game
     public void Draw()
     {
         RenderTexture.Clear();
+        Renderer.Render(TestCircle);
         App.Draw(Renderer);
         RenderTexture.Display();
 
         App.Window.Clear();
-        App.Window.Draw(RenderTextureSprite);
+        App.Window.Draw(Renderer.RenderTextureSprite);
         App.Window.Display();
     }
 }
