@@ -5,9 +5,9 @@
     },
     "activeFile": "Maps/Cave/Cave.tmx",
     "expandedProjectPaths": [
+        "Maps",
         "Maps/Cave",
-        ".",
-        "Maps"
+        "."
     ],
     "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
@@ -36,14 +36,17 @@
             }
         },
         "Maps/Cave/Cave.tmx": {
+            "expandedGroupLayers": [
+                6
+            ],
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 0.25,
-            "selectedLayer": -1,
+            "scale": 0.5,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 3644,
-                "y": 754
+                "x": 1436,
+                "y": 527
             }
         },
         "Maps/Cave/Grayboxing.tsx": {

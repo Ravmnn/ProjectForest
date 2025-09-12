@@ -1,20 +1,18 @@
+using SFML.System;
 using SFML.Graphics;
 
 using Latte.Core.Type;
-using Latte.Application;
-using SFML.System;
+
+using Milkway;
 
 
 namespace ProjectForest;
 
 
-public class PixelatedRenderer : DefaultRenderer
+public class PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null) : TextureRenderer(renderTexture)
 {
-    private Vec2f _scale;
+    private Vec2f _scale = scale ?? new Vec2f(1, 1);
 
-
-    public RenderTexture RenderTexture => (RenderTarget as RenderTexture)!;
-    public Sprite RenderTextureSprite { get; }
 
     public Vec2f Scale
     {
@@ -24,13 +22,6 @@ public class PixelatedRenderer : DefaultRenderer
             _scale = value;
             RenderTextureSprite.Scale = _scale;
         }
-    }
-
-
-    public PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null) : base(renderTexture)
-    {
-        _scale = scale ?? new Vec2f(1, 1);
-        RenderTextureSprite = new Sprite(RenderTexture.Texture);
     }
 
 
@@ -48,7 +39,7 @@ public class PixelatedRenderer : DefaultRenderer
             transformable.Position = (Vec2f)transformable.Position * Scale;
         }
 
-        RenderTexture.Draw(drawable);
+        base.Render(drawable);
 
         if (transformable is not null)
         {

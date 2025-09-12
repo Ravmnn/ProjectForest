@@ -1,27 +1,37 @@
 using SFML.Graphics;
 
+using Latte.Core;
+
 using DotTiled;
 
+using Milkway;
 using Milkway.Tiles;
 
 
 namespace ProjectForest;
 
 
-public class World
+public class World : IUpdateable, IDrawable
 {
     private const string RoomsLayerName = "Rooms";
 
 
+    public Camera Camera { get; }
+
     public Map Map { get; }
     public TileSet TileSet { get; }
 
-    public TileMap? CurrentRoom { get; private set; }
+    public GameParallax? CurrentRoom { get; private set; }
     public uint CurrentRoomIndex { get; private set; }
 
+    public event EventHandler? UpdateEvent;
+    public event EventHandler? DrawEvent;
 
-    public World(Map map, TileSet tileSet, uint roomIndex = 0)
+
+    public World(Camera camera, Map map, TileSet tileSet, uint roomIndex = 0)
     {
+        Camera = camera;
+
         Map = map;
         TileSet = tileSet;
 
@@ -31,18 +41,35 @@ public class World
     }
 
 
+    public void Update()
+    {
+        CurrentRoom?.Update();
+
+        UpdateEvent?.Invoke(this, EventArgs.Empty);
+    }
+
+
+    public void Draw(IRenderer target)
+    {
+        CurrentRoom?.Draw(target);
+
+        DrawEvent?.Invoke(this, EventArgs.Empty);
+    }
+
+
     public void LoadRoomByIndex(uint index)
     {
-        if (GetRoomsLayer() is not { } objectLayer || GetRoomByIndex(objectLayer, index) is not { } room)
+        if (GetRoomsLayer() is not { } objectLayer || GetRoomByIndex(objectLayer, index) is not { } roomBounds)
             return;
 
         CurrentRoom?.RemoveTilesFromApp();
 
         var tileSize = (int)Map.TileWidth;
-        var area = new IntRect((int)room.X / tileSize, (int)room.Y / tileSize, (int)room.Width / tileSize, (int)room.Height / tileSize);
+        var roomArea = new IntRect((int)roomBounds.X / tileSize, (int)roomBounds.Y / tileSize, (int)roomBounds.Width / tileSize, (int)roomBounds.Height / tileSize);
 
         CurrentRoomIndex = index;
-        CurrentRoom = new TileMap(TileSet, Map, (Map.Layers[1] as TileLayer)!, area);
+        CurrentRoom = new GameParallax(Camera, TileSet, Map, roomArea);
+
         CurrentRoom.AddTilesToApp();
     }
 
