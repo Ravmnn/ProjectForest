@@ -3,11 +3,11 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Maps/Cave/Cave.tmx",
+    "activeFile": "Maps/Cave/Cave.tsx",
     "expandedProjectPaths": [
-        "Maps",
+        ".",
         "Maps/Cave",
-        "."
+        "Maps"
     ],
     "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
@@ -42,42 +42,53 @@
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 0.5,
-            "selectedLayer": 0,
+            "scale": 0.25,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1436,
-                "y": 527
+                "x": 1916,
+                "y": 338
             }
+        },
+        "Maps/Cave/Cave.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "Maps/Cave/Grayboxing.tsx": {
             "scaleInDock": 3,
             "scaleInEditor": 1
         },
         "Maps/Cave/Test.tmx": {
-            "scale": 0.46728515625,
+            "scale": 3,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1600.7356321839084,
-                "y": 1599.6656217345876
+                "x": 185.66666666666663,
+                "y": 72.83333333333331
             }
         }
     },
-    "map.height": 150,
+    "last.imagePath": "/home/marvin/Documentos/program/csharp/ProjectForest/ProjectForest/Resources/Sprites/Tilesets",
+    "map.height": 100,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 8,
     "map.tileWidth": 8,
-    "map.width": 200,
+    "map.width": 100,
     "openFiles": [
         "Maps/Cave/Cave.tmx",
-        "Maps/Cave/Grayboxing.tsx"
+        "Maps/Cave/Cave.tsx"
     ],
     "project": "ProjectForest.tiled-project",
     "recentFiles": [
-        "Maps/Cave/Grayboxing.tsx",
         "Maps/Cave/Cave.tmx",
+        "Maps/Cave/Grayboxing.tsx",
+        "Maps/Cave/Cave.tsx",
         "Maps/Cave/Test.tmx",
         "Maps/Cave/1.tmx",
         "Maps/Cave/3.tmx",
         "Maps/Cave/2.tmx"
-    ]
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 8,
+        "width": 8
+    }
 }

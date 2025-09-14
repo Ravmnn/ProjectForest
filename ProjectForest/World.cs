@@ -35,7 +35,7 @@ public class World : IUpdateable, IDrawable
         Map = map;
         TileSet = tileSet;
 
-        CurrentRoom = null!;
+        CurrentRoom = null;
 
         LoadRoomByIndex(roomIndex);
     }
