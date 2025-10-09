@@ -1,20 +1,46 @@
-﻿using Latte.Application;
+﻿using System.Reflection;
+
+using Latte.Core;
+using Latte.Application;
+
+using Milkway;
 
 
 namespace ProjectForest;
+
+
 
 
 class Program
 {
     private static void Main(string[] args)
     {
-        var game = new Game();
+        var settings = AppInitializationSettings.Default;
+        var contextSettings = settings.ContextSettings with { AntialiasingLevel = 0 };
+
+        settings = settings with { ContextSettings = contextSettings };
+
+
+        Engine.InitFullScreen("Project Forest", settings);
+
+        App.Debugger!.EnableKeyShortcuts = true;
+        App.ManualClearDisplayProcess = false;
+        App.ManualObjectDraw = false;
+
+        EmbeddedResourceLoader.ResourcesPath = "ProjectForest.Resources";
+        EmbeddedResourceLoader.SourceAssembly = Assembly.GetExecutingAssembly();
+
+
+        App.Section = new MainMenu();
 
 
         while (!App.ShouldQuit)
         {
-            game.Update();
-            game.Draw();
+            App.Update();
+            App.Draw();
         }
+
+
+        App.Deinit();
     }
 }

@@ -2,8 +2,7 @@ using SFML.System;
 using SFML.Graphics;
 
 using Latte.Core.Type;
-
-using Milkway;
+using Latte.Rendering;
 
 
 namespace ProjectForest;
@@ -12,8 +11,6 @@ namespace ProjectForest;
 public class PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null) : TextureRenderer(renderTexture)
 {
     private Vec2f _scale = scale ?? new Vec2f(1, 1);
-
-
     public Vec2f Scale
     {
         get => _scale;
@@ -25,7 +22,7 @@ public class PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null)
     }
 
 
-    public override void Render(Drawable drawable)
+    public override void Render(Drawable drawable, Effect? drawableEffect = null)
     {
         var transformable = drawable as Transformable;
         var oldScale = transformable?.Scale;
@@ -39,7 +36,7 @@ public class PixelatedRenderer(RenderTexture renderTexture, Vec2f? scale = null)
             transformable.Position = (Vec2f)transformable.Position * Scale;
         }
 
-        base.Render(drawable);
+        base.Render(drawable, drawableEffect);
 
         if (transformable is not null)
         {

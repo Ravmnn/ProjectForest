@@ -42,22 +42,7 @@ public class Game
     {
         _initialized = false;
 
-        SetupApplication();
         SetupGame();
-    }
-
-
-    private void SetupApplication()
-    {
-        App.Init(VideoMode.FullscreenModes[0], "Project Forest", null,
-            Styles.Fullscreen, Latte.Application.Window.DefaultSettings with { AntialiasingLevel = 0 });
-
-        App.Debugger!.EnableKeyShortcuts = true;
-        App.ManualClearDisplayProcess = true;
-        App.ManualObjectDraw = true;
-
-        EmbeddedResourceLoader.ResourcesPath = "ProjectForest.Resources";
-        EmbeddedResourceLoader.SourceAssembly = Assembly.GetExecutingAssembly();
     }
 
 
