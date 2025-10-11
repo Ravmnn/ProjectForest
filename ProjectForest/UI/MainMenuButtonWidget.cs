@@ -24,8 +24,8 @@ public class MainMenuButtonWidget : ButtonElement
     private FloatsTweenAnimation? _displacementAnimation;
 
     private readonly Vec2f _normalDisplacement = new Vec2f();
-    private readonly Vec2f _hoverDisplacement = new Vec2f(-12);
-    private readonly Vec2f _pressDisplacement = new Vec2f(-8);
+    private readonly Vec2f _hoverDisplacement = new Vec2f(-10);
+    private readonly Vec2f _pressDisplacement = new Vec2f(-6);
 
 
 
