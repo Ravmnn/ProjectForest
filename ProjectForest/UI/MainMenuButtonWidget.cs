@@ -11,7 +11,7 @@ namespace ProjectForest.UI;
 
 public class MainMenuButtonWidget : ButtonElement
 {
-    private const double AnimationTime = 0.07;
+    private const double AnimationTime = 0.1;
 
 
     private FloatsTweenAnimation? _alphaAnimation;
@@ -21,10 +21,11 @@ public class MainMenuButtonWidget : ButtonElement
 
 
 
-    private FloatsTweenAnimation? _scaleAnimation;
+    private FloatsTweenAnimation? _displacementAnimation;
 
-    private readonly Vec2f _normalScale = new Vec2f(1, 1);
-    private readonly Vec2f _pressScale = new Vec2f(0.97f, 0.97f);
+    private readonly Vec2f _normalDisplacement = new Vec2f();
+    private readonly Vec2f _hoverDisplacement = new Vec2f(-12);
+    private readonly Vec2f _pressDisplacement = new Vec2f(-8);
 
 
 
@@ -69,13 +70,13 @@ public class MainMenuButtonWidget : ButtonElement
     private void UpdateAnimations()
     {
         _alphaAnimation?.Update();
-        _scaleAnimation?.Update();
-
-        if (_scaleAnimation is not null)
-            Text.Scale.ModifyFrom(_scaleAnimation.CurrentValues);
+        _displacementAnimation?.Update();
 
         if (_alphaAnimation is not null)
             Text.Color = Text.Color with { A = (byte)_alphaAnimation.CurrentValues[0] };
+
+        if (_displacementAnimation is not null)
+            Text.AlignmentMargin.ModifyFrom(_displacementAnimation.CurrentValues);
     }
 
 
@@ -84,18 +85,18 @@ public class MainMenuButtonWidget : ButtonElement
     private void NormalAnimation()
     {
         _alphaAnimation = Tween.New(Text.Color.A, _normalAlpha, AnimationTime, Easing.EaseOutQuad);
-        _scaleAnimation = Tween.New(Text.Scale, _normalScale, AnimationTime, Easing.EaseOutQuad);
+        _displacementAnimation = Tween.New(Text.AlignmentMargin, _normalDisplacement, AnimationTime, Easing.EaseOutQuad);
     }
 
     private void HoverAnimation()
     {
         _alphaAnimation = Tween.New(Text.Color.A, _hoverAlpha, AnimationTime, Easing.EaseOutQuad);
-        _scaleAnimation = Tween.New(Text.Scale, _normalScale, AnimationTime, Easing.EaseOutQuad);
+        _displacementAnimation = Tween.New(Text.AlignmentMargin, _hoverDisplacement, AnimationTime, Easing.EaseOutQuad);
     }
 
     private void PressAnimation()
     {
-        _scaleAnimation = Tween.New(Text.Scale, _pressScale, AnimationTime, Easing.EaseOutQuad);
+        _displacementAnimation = Tween.New(Text.AlignmentMargin, _pressDisplacement, AnimationTime, Easing.EaseOutQuad);
     }
 
 

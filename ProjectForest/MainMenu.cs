@@ -1,9 +1,13 @@
-using SFML.Graphics;
-
+using Latte.Core;
 using Latte.Core.Type;
 using Latte.UI;
 using Latte.UI.Elements;
 using Latte.Application;
+
+using DotTiled.Serialization;
+
+using Milkway.Tiles;
+using Milkway.Tiles.Tiled;
 
 using ProjectForest.UI;
 
@@ -54,7 +58,13 @@ public sealed class MainMenu : Section
 
     private void OnPlayButtonClick(object? _, EventArgs __)
     {
+        var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps.Cave"));
+        var map = loader.LoadMap("Cave.tmx");
 
+        var tileSetImage = EmbeddedResourceLoader.LoadImage("Sprites.Tilesets.GrayboxingTileset.png");
+        var tileSet = new TileSet(tileSetImage, 8);
+
+        App.Section = new Game(map, tileSet);
     }
 
 

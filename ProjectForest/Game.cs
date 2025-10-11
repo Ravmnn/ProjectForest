@@ -1,123 +1,96 @@
-using System.Reflection;
-
-using SFML.Window;
 using SFML.Graphics;
 
-using Latte.Core;
 using Latte.Core.Type;
+using Latte.Rendering;
 using Latte.Application;
 
-using DotTiled.Serialization;
+using DotTiled;
 
 using Milkway;
 using Milkway.Tiles;
-using Milkway.Tiles.Tiled;
 
 
 namespace ProjectForest;
 
 
-public class Game
+public class Game : Section
 {
-    private bool _initialized;
-
-
     public static Vec2u Resolution => AspectRatio * 15;
     public static Vec2u AspectRatio => new Vec2u(16, 9);
 
     public static Vec2f Scale =>
         new Vec2f((float)App.Window.WindowRect.Size.X / Resolution.X, (float)App.Window.WindowRect.Size.Y / Resolution.Y);
 
+
     public PixelatedRenderer Renderer { get; private set; }
     public RenderTexture RenderTexture => Renderer.RenderTexture;
 
     public Camera Camera { get; private set; }
-    public MouseScreenDragger MouseScreenDragger { get; private set; }
 
 
     public World World { get; private set; }
 
 
-    public Game()
-    {
-        _initialized = false;
-
-        SetupGame();
-    }
-
-
-    private void SetupGame()
+    public Game(Map map, TileSet tileSet)
     {
         Camera = new Camera(App.Window);
-        MouseScreenDragger = new MouseScreenDragger(Camera);
-
         Renderer = new PixelatedRenderer(new RenderTexture(Resolution.X, Resolution.Y));
 
-
-        var loader = Loader.DefaultWith(resourceReader: new TiledEmbeddedResourceReader("Maps.Cave"));
-
-        var map = loader.LoadMap("Cave.tmx");
-        var tileSet = new TileSet(EmbeddedResourceLoader.LoadImage("Sprites.Tilesets.GrayboxingTileset.png"), 8);
-
         World = new World(Camera, map, tileSet);
-
-
-        KeyboardInput.KeyReleasedEvent += (_, args) =>
-        {
-            if (args.Scancode == Keyboard.Scancode.Left)
-            {
-                World.LoadRoomByIndex(World.CurrentRoomIndex - 1);
-                Console.WriteLine(World.CurrentRoomIndex);
-            }
-
-            if (args.Scancode == Keyboard.Scancode.Right)
-            {
-                World.LoadRoomByIndex(World.CurrentRoomIndex + 1);
-                Console.WriteLine(World.CurrentRoomIndex);
-            }
-        };
     }
 
 
-    private void Setup()
-    {
-        if (_initialized)
-            return;
 
-        _initialized = true;
+
+    public override void Initialize()
+    {
+        App.Renderer = Renderer;
+        App.DrawEndedEvent += OnAppDrawEnd;
+
+        base.Initialize();
     }
 
 
-    public void Update()
+    public override void Deinitialize()
     {
-        App.Update();
+        App.DrawEndedEvent -= OnAppDrawEnd;
 
-        Setup();
+        base.Deinitialize();
+    }
 
 
+
+
+    public override void Update()
+    {
         Camera.Update();
-        MouseScreenDragger.Update();
-
         World.Update();
 
 
         Renderer.Scale = Scale;
         RenderTexture.SetView(App.Window.GetView());
+
+        base.Update();
     }
 
 
-    public void Draw()
+    public override void Draw(IRenderer renderer)
     {
         RenderTexture.Clear();
-        App.Draw(Renderer);
 
-        World.Draw(Renderer);
+        World.Draw(renderer);
 
         RenderTexture.Display();
 
 
-        App.Window.Clear();
+        base.Draw(renderer);
+    }
+
+
+
+
+    private void OnAppDrawEnd(object? _, EventArgs __)
+    {
         App.Window.Draw(Renderer.RenderTextureSprite);
-        App.Window.Display();
     }
 }

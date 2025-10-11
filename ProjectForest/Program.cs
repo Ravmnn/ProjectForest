@@ -24,8 +24,6 @@ class Program
         Engine.InitFullScreen("Project Forest", settings);
 
         App.Debugger!.EnableKeyShortcuts = true;
-        App.ManualClearDisplayProcess = false;
-        App.ManualObjectDraw = false;
 
         EmbeddedResourceLoader.ResourcesPath = "ProjectForest.Resources";
         EmbeddedResourceLoader.SourceAssembly = Assembly.GetExecutingAssembly();

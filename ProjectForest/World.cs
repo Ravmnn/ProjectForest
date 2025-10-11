@@ -25,6 +25,11 @@ public class World : IUpdateable, IDrawable
     public GameParallax? CurrentRoom { get; private set; }
     public uint CurrentRoomIndex { get; private set; }
 
+
+    // TODO: create player logic
+    // TODO: create tile collision logic
+
+
     public event EventHandler? UpdateEvent;
     public event EventHandler? DrawEvent;
 
