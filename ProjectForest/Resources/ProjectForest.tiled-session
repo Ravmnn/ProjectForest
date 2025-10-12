@@ -3,11 +3,11 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Maps/Cave/Test.tmx",
+    "activeFile": "Maps/Cave/Cave.tmx",
     "expandedProjectPaths": [
-        "Maps",
         ".",
-        "Maps/Cave"
+        "Maps/Cave",
+        "Maps"
     ],
     "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
@@ -42,11 +42,11 @@
             "expandedObjectLayers": [
                 4
             ],
-            "scale": 3,
-            "selectedLayer": 1,
+            "scale": 1,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 174.49999999999997,
-                "y": 654.1666666666666
+                "x": 306,
+                "y": 653.5
             }
         },
         "Maps/Cave/Cave.tsx": {
@@ -58,11 +58,11 @@
             "scaleInEditor": 1
         },
         "Maps/Cave/Test.tmx": {
-            "scale": 4,
+            "scale": 2,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 466.875,
-                "y": 975.875
+                "x": 728.25,
+                "y": 592.25
             }
         }
     },
@@ -78,10 +78,11 @@
         "Maps/Cave/Cave.tmx"
     ],
     "project": "ProjectForest.tiled-project",
+    "property.type": "object",
     "recentFiles": [
-        "Maps/Cave/Cave.tmx",
-        "Maps/Cave/Cave.tsx",
         "Maps/Cave/Test.tmx",
+        "Maps/Cave/Cave.tsx",
+        "Maps/Cave/Cave.tmx",
         "Maps/Cave/Grayboxing.tsx",
         "Maps/Cave/1.tmx",
         "Maps/Cave/3.tmx",

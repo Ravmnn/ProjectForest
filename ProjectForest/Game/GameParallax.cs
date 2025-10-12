@@ -6,13 +6,17 @@ using Milkway;
 using Milkway.Tiles;
 
 
-namespace ProjectForest;
+namespace ProjectForest.Game;
+
+
 
 
 public sealed class GameParallax : TileMapParallax
 {
     public TileMapParallaxLayer Main => (Layers[1] as TileMapParallaxLayer)!;
     public TileMapParallaxLayer Background => (Layers[0] as TileMapParallaxLayer)!;
+
+
 
 
     public GameParallax(Camera camera, TileSet tileSet, Map map, IntRect? area = null)
@@ -22,6 +26,6 @@ public sealed class GameParallax : TileMapParallax
         Main.RelativePriority = 1;
 
         Background.Depth = 0;
-        Background.ExtraShade = 0.5f;
+        Background.ExtraShade = 0.75f;
     }
 }

@@ -1,15 +1,20 @@
 using SFML.Graphics;
 
 using Latte.Core;
+using Latte.Core.Type;
 using Latte.Rendering;
 
 using Milkway;
+using Milkway.Physics;
 using Milkway.Tiles;
 
 using DotTiled;
+using Latte.Application;
 
 
-namespace ProjectForest;
+namespace ProjectForest.Game;
+
+
 
 
 public class World : IUpdateable, IDrawable
@@ -17,13 +22,26 @@ public class World : IUpdateable, IDrawable
     private const string RoomsLayerName = "Rooms";
 
 
-    public Camera Camera { get; }
+
 
     public Map Map { get; }
     public TileSet TileSet { get; }
 
+
+
+
+    public Camera Camera { get; }
+
+
     public GameParallax? CurrentRoom { get; private set; }
     public uint CurrentRoomIndex { get; private set; }
+
+
+
+
+    public PhysicsWorld Physics { get; private set; }
+
+    public Player Player { get; private set; }
 
 
     // TODO: create player logic
@@ -34,33 +52,59 @@ public class World : IUpdateable, IDrawable
     public event EventHandler? DrawEvent;
 
 
+
+
     public World(Camera camera, Map map, TileSet tileSet, uint roomIndex = 0)
     {
-        Camera = camera;
-
         Map = map;
         TileSet = tileSet;
 
+        Camera = camera;
         CurrentRoom = null;
+
+
+        Physics = new PhysicsWorld
+        {
+            Gravity = new Vec2f(0f, 0f),
+            Drag = new Vec2f(4f, 4f)
+        };
+
+        Player = new Player(new Vec2f(10, 150));
+
+        Physics.AddBody(Player);
+
 
         LoadRoomByIndex(roomIndex);
     }
 
 
+
+
     public void Update()
     {
+        Physics.Update();
+        App.UpdateObject(Player);
+
+
         CurrentRoom?.Update();
 
         UpdateEvent?.Invoke(this, EventArgs.Empty);
     }
 
 
+
+
     public void Draw(IRenderer target)
     {
         CurrentRoom?.Draw(target);
 
+        App.DrawObject(target, Player);
+
+
         DrawEvent?.Invoke(this, EventArgs.Empty);
     }
+
+
 
 
     public void LoadRoomByIndex(uint index)
@@ -68,16 +112,15 @@ public class World : IUpdateable, IDrawable
         if (GetRoomsLayer() is not { } objectLayer || GetRoomByIndex(objectLayer, index) is not { } roomBounds)
             return;
 
-        CurrentRoom?.RemoveTilesFromApp();
-
         var tileSize = (int)Map.TileWidth;
         var roomArea = new IntRect((int)roomBounds.X / tileSize, (int)roomBounds.Y / tileSize, (int)roomBounds.Width / tileSize, (int)roomBounds.Height / tileSize);
 
         CurrentRoomIndex = index;
         CurrentRoom = new GameParallax(Camera, TileSet, Map, roomArea);
-
-        CurrentRoom.AddTilesToApp();
+        CurrentRoom.Main.TileMap.AddStaticCollisionBodies(Physics, TileMapCollisionMethod.All);
     }
+
+
 
 
     private ObjectLayer? GetRoomsLayer()
@@ -88,6 +131,8 @@ public class World : IUpdateable, IDrawable
 
         return null;
     }
+
+
 
 
     private static DotTiled.Object? GetRoomByIndex(ObjectLayer objectLayer, uint index)

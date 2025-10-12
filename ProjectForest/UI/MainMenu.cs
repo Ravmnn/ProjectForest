@@ -9,10 +9,11 @@ using DotTiled.Serialization;
 using Milkway.Tiles;
 using Milkway.Tiles.Tiled;
 
-using ProjectForest.UI;
+using ProjectForest.Game;
+using ProjectForest.UI.Widgets;
 
 
-namespace ProjectForest;
+namespace ProjectForest.UI;
 
 
 
@@ -64,7 +65,7 @@ public sealed class MainMenu : Section
         var tileSetImage = EmbeddedResourceLoader.LoadImage("Sprites.Tilesets.GrayboxingTileset.png");
         var tileSet = new TileSet(tileSetImage, 8);
 
-        App.Section = new Game(map, tileSet);
+        App.Section = new GameManager(map, tileSet);
     }
 
 

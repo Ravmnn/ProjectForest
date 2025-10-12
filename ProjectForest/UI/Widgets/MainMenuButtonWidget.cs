@@ -4,7 +4,7 @@ using Latte.UI.Elements;
 using Latte.Tweening;
 
 
-namespace ProjectForest.UI;
+namespace ProjectForest.UI.Widgets;
 
 
 
@@ -50,6 +50,8 @@ public class MainMenuButtonWidget : ButtonElement
     }
 
 
+
+
     public override void Setup()
     {
         Text.UpdateSfmlProperties();
@@ -57,6 +59,8 @@ public class MainMenuButtonWidget : ButtonElement
 
         base.Setup();
     }
+
+
 
 
     public override void Update()
@@ -98,6 +102,8 @@ public class MainMenuButtonWidget : ButtonElement
     {
         _displacementAnimation = Tween.New(Text.AlignmentMargin, _pressDisplacement, AnimationTime, Easing.EaseOutQuad);
     }
+
+
 
 
     public override void OnMouseEnter()
