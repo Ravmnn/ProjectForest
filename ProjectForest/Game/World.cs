@@ -44,10 +44,6 @@ public class World : IUpdateable, IDrawable
     public Player Player { get; private set; }
 
 
-    // TODO: create player logic
-    // TODO: create tile collision logic
-
-
     public event EventHandler? UpdateEvent;
     public event EventHandler? DrawEvent;
 
@@ -115,7 +111,7 @@ public class World : IUpdateable, IDrawable
 
         CurrentRoomIndex = index;
         CurrentRoom = new GameParallax(Camera, TileSet, Map, roomArea);
-        CurrentRoom.Main.TileMap.AddStaticCollisionBodies(Physics, TileMapCollisionMethod.All);
+        CurrentRoom.Main.TileMap.ToSolidTiles(Physics, TileMapCollisionMethod.Outline);
     }
 
 
