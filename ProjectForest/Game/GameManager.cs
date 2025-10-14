@@ -6,7 +6,6 @@ using Latte.Application;
 
 using DotTiled;
 
-using Milkway;
 using Milkway.Tiles;
 
 
@@ -72,11 +71,9 @@ public class GameManager : Section
     {
         Renderer.Scale = Scale;
 
-        //RenderTexture.SetView(App.Window.GetView());
-
-
         Camera.Update();
         World.Update();
+
 
         base.Update();
     }
@@ -87,9 +84,7 @@ public class GameManager : Section
     public override void Draw(IRenderer renderer)
     {
         RenderTexture.Clear();
-
         World.Draw(renderer);
-
         RenderTexture.Display();
 
 

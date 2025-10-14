@@ -1,6 +1,7 @@
 using SFML.Graphics;
 
 using Latte.Core;
+using Latte.Core.Objects;
 using Latte.Core.Type;
 using Latte.Rendering;
 
@@ -9,7 +10,6 @@ using Milkway.Physics;
 using Milkway.Tiles;
 
 using DotTiled;
-using Latte.Application;
 
 
 namespace ProjectForest.Game;
@@ -83,10 +83,9 @@ public class World : IUpdateable, IDrawable
     public void Update()
     {
         Physics.Update();
-        App.UpdateObject(Player);
-
-
+        Player.UpdateObject();
         CurrentRoom?.Update();
+
 
         UpdateEvent?.Invoke(this, EventArgs.Empty);
     }
@@ -94,11 +93,10 @@ public class World : IUpdateable, IDrawable
 
 
 
-    public void Draw(IRenderer target)
+    public void Draw(IRenderer renderer)
     {
-        CurrentRoom?.Draw(target);
-
-        App.DrawObject(target, Player);
+        CurrentRoom?.Draw(renderer);
+        Player.DrawObject(renderer);
 
 
         DrawEvent?.Invoke(this, EventArgs.Empty);
