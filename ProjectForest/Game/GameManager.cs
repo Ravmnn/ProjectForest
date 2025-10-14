@@ -1,13 +1,9 @@
-using SFML.Window;
-
-using Latte.Core;
 using Latte.Core.Objects;
 using Latte.Core.Type;
 using Latte.Rendering;
 using Latte.Application;
 
 using Milkway.Tiles;
-using Milkway.Physics;
 
 using DotTiled;
 
@@ -22,11 +18,6 @@ namespace ProjectForest.Game;
 
 public class GameManager : Section
 {
-    private bool _drawCollisionBoxes;
-
-
-
-
     public GameCamera Camera { get; private set; }
 
     public World World { get; private set; }
