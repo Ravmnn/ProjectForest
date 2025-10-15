@@ -102,7 +102,7 @@ public class GameManager : Section
 
     private static void DrawFPS()
     {
-        var fpsString = $"{((int)DeltaTime.FramesPerSecond).ToString()}";
+        var fpsString = $"{((int)DeltaTime.FramesPerSecond).ToString()} FPS";
         Latte.Debugging.Draw.Text(App.Window.Renderer, new Vec2f(), fpsString, 30, Color.White);
     }
 }

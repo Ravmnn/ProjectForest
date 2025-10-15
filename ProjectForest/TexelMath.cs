@@ -4,6 +4,8 @@ using Latte.Core.Type;
 namespace ProjectForest;
 
 
+
+
 public static class TexelMath
 {
     public static Vec2f ToHalfDecimal(this Vec2f source)
