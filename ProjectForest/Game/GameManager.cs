@@ -1,8 +1,12 @@
+using SFML.Window;
+
+using Latte.Core;
 using Latte.Core.Objects;
 using Latte.Core.Type;
 using Latte.Rendering;
 using Latte.Application;
 
+using Milkway.Physics;
 using Milkway.Tiles;
 
 using DotTiled;
@@ -13,6 +17,10 @@ using Color = SFML.Graphics.Color;
 
 namespace ProjectForest.Game;
 
+
+
+// TODO: add in-game room loading, that is, the room is loaded based on the player's position
+// TODO: add camera box limits, it shouldn't move outside the box.
 
 
 
@@ -28,10 +36,15 @@ public class GameManager : Section
 
 
 
+    public bool DebugShowStaticBodyBoxes { get; set; }
+
+
+
+
     public GameManager(Map map, TileSet tileSet)
     {
         Camera = new GameCamera();
-        World = new World(Camera, map, tileSet);
+        World = new World(Camera, map, tileSet, 0);
 
         GameObjectHandler = new GameObjectHandler(Camera);
 
@@ -66,9 +79,12 @@ public class GameManager : Section
     public override void Update()
     {
         Camera.Update();
+
         World.Update();
 
-        GameObjectHandler.Update();
+
+        if (KeyboardInput.ReleasedKeyCode == Keyboard.Scancode.Z)
+            DebugShowStaticBodyBoxes = !DebugShowStaticBodyBoxes;
 
 
         base.Update();
@@ -82,12 +98,23 @@ public class GameManager : Section
         Camera.RenderTexture.Clear();
         World.Draw(renderer);
 
-
+        DebugDrawCollisionBoxes();
 
         Camera.RenderTexture.Display();
 
 
         base.Draw(renderer);
+    }
+
+
+    private void DebugDrawCollisionBoxes()
+    {
+        if (!DebugShowStaticBodyBoxes)
+            return;
+
+        foreach (var tile in World.CurrentRoom!.Main.TileMap.Tiles)
+            if (tile is IBoxBody { Static: true } body)
+                Latte.Debugging.Draw.LineRect(App.Renderer, body.BoundingBox().ShrinkRect(1f), Color.Green);
     }
 
 
@@ -102,7 +129,7 @@ public class GameManager : Section
 
     private static void DrawFPS()
     {
-        var fpsString = $"{((int)DeltaTime.FramesPerSecond).ToString()} FPS";
+        var fpsString = $"{((int)DeltaTime.FramesPerSecond).ToString()} FPS -- {DeltaTime.Seconds:F5} DeltaTime";
         Latte.Debugging.Draw.Text(App.Window.Renderer, new Vec2f(), fpsString, 30, Color.White);
     }
 }

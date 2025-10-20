@@ -61,11 +61,11 @@ public class World : IUpdateable, IDrawable
 
         Physics = new PhysicsWorld
         {
-            Gravity = new Vec2f(0f, 0f),
-            Drag = new Vec2f(4f, 4f)
+            Gravity = new Vec2f(0f, 250f),
+            Drag = new Vec2f(400f, 100f)
         };
 
-        Player = new Player(new Vec2f(10, 150));
+        Player = new Player(new Vec2f(10, 200));
 
         Physics.AddBody(Player);
 
@@ -108,6 +108,10 @@ public class World : IUpdateable, IDrawable
 
         var tileSize = (int)Map.TileWidth;
         var roomArea = new IntRect((int)roomBounds.X / tileSize, (int)roomBounds.Y / tileSize, (int)roomBounds.Width / tileSize, (int)roomBounds.Height / tileSize);
+
+        roomArea.Top -= 10;
+        roomArea.Width = (int)(roomArea.Width * 1.5);
+        roomArea.Height += 60;
 
         CurrentRoomIndex = index;
         CurrentRoom = new GameParallax(Camera, TileSet, Map, roomArea);

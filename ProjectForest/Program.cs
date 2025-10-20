@@ -6,6 +6,7 @@ using Latte.Application;
 using Milkway;
 
 using ProjectForest.UI;
+using SFML.Window;
 
 
 namespace ProjectForest;
@@ -23,7 +24,7 @@ class Program
         settings = settings with { ContextSettings = contextSettings };
 
 
-        Engine.InitFullScreen("Project Forest", settings);
+        Engine.Init(VideoMode.DesktopMode, "Project Forest", settings);
 
         App.Debugger!.EnableKeyShortcuts = true;
 
